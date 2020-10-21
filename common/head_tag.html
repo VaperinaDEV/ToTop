@@ -1,0 +1,193 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
+
+<script type="text/discourse-plugin" version="0.8">
+// Category Topic Button
+const i18nTopicLable = I18n.lookup("topic.create");
+api.modifyClass("component:create-topic-button", {
+  didInsertElement: function() {
+    var button = $(this),
+      category = button[0].parentView.get("category"),
+      label = button[0].label,
+      newTopicLabel = "topic.create",
+      buttonText = "";
+
+    if (category) {
+      categoryName = category.name;
+
+      if (label != newTopicLabel) {
+        return;
+      } else {
+        switch (categoryName) {
+          case "ADOK-VESZEK": // category name
+            buttonText = "Hirdetésfeladás"; // button text
+            break;
+            // repeat
+          case "MODOK":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "SZETTEK":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "RBA / RDA / RDTA / RTA":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "PORLASZTÓS TANKOK":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "KIEGÉSZÍTŐK":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "AROMÁK ÉS KELLÉKEK":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "ÉRTÉKELÉSEK":
+            buttonText = "Értékelés írása";
+            break;
+            // repeat
+          case "CSERE E-CIGIRE":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "AUKCIÓ":
+            buttonText = "Hirdetésfeladás";
+            break;
+            // repeat
+          case "ESEMÉNYEK":
+            buttonText = "Új esemény";
+            break;
+            // repeat
+          case "TALÁLT / ELVESZTETT":
+            buttonText = "Új jelentés";
+            break;
+            // repeat
+          case "YouTuber":
+            buttonText = "Videó megosztása";
+            break;
+            // repeat
+          case "JOBBAN VAGYOK!":
+            buttonText = "Történet beküldése";
+            break;
+          // add more above this line
+          default:
+            buttonText = i18nTopicLable;
+        }
+        $("#create-topic .d-button-label").text(buttonText);
+      }
+    }
+  }
+});
+</script>
+
+
+<script type="text/discourse-plugin" version="0.8">
+// To Top
+api.onPageChange((url) => {
+if (url == "/" ){
+    $('.d-header .title, .d-tab-bar-theme .tab:first-child').click(function(){
+    $('body,html').animate({
+    scrollTop: 0
+    }, 50);
+    return true;
+});
+};
+});
+</script>
+
+<script type="text/discourse-plugin" version="0.8">
+// To Top
+api.onPageChange((url) => {
+if (url == "/latest" ){
+    $('.d-header .title, .d-tab-bar-theme .tab:first-child').click(function(){
+    $('body,html').animate({
+    scrollTop: 0
+    }, 50);
+    return true;
+});
+};
+});
+</script>
+
+
+<script type="text/discourse-plugin" version="0.8">
+// Home Groups
+  // This is the plugin outlet, followed by a custom name for the component
+  api.registerConnectorClass("below-site-header", "custom-homepage", {
+
+    // Setting up our component
+    setupComponent(args, component) {
+
+     // Next we're getting the site setting 'top_menu',
+     // splitting the values into an array,
+     // and adding a leading slash
+     var topMenuRoutes = 
+        Discourse.SiteSettings.top_menu.split('|')
+        .map(function(route) {return '/' + route});
+      
+     // The first page listed in the 'top_menu' setting is your homepage
+     // lets assign it to a variable
+     var homeRoute = topMenuRoutes[0];
+  
+     // This calls our code whenever the page changes
+     api.onPageChange((url) => {
+
+        // Check if we're on the homepage 
+        if (url === "/" || url === homeRoute ){ 
+          // If it's the homepage add the 'custom-homepage' class to HTML tag
+          // and set 'displayCustomHomepage' to true
+          document.querySelector("html").classList.add("custom-homepage"); 
+          component.set("displayCustomHomepage", true); 
+        } else {  
+          // If we're not on the homepage remove the class
+          // and set `displayCustomHomepage` to false
+          document.querySelector("html").classList.remove("custom-homepage"); 
+          component.set("displayCustomHomepage", false); 
+        }
+      });
+    }
+    
+  });
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="/connectors/below-site-header/custom-homepage">
+  {{#if displayCustomHomepage}} 
+    <div class="custom-homepage-wrapper wrap">
+        <div class="carouselcs">
+            <a href="/groups/dl_csoport">
+            <div class="itemcs">
+                <div>
+                 <span><i class="fas fa-users grouphomepage-icon"></i> DL Csoport</span>
+                </div>
+            </div>
+            </a>
+            <a href="/groups/mtl_csoport">
+            <div class="itemcs">
+                <div>
+                  <span><i class="fas fa-users grouphomepage-icon"></i> MTL Csoport</span>
+                </div>
+            </div>
+            </a>
+            <a href="/groups/kezdo_csoport">
+            <div class="itemcs">
+                <div>
+                   <span><i class="fas fa-users grouphomepage-icon"></i> Kezdő Csoport</span>
+                </div>
+            </div>
+            </a>
+            <a href="/groups/halado_csoport">
+            <div class="itemcs">
+                <div>
+                    <span><i class="fas fa-users grouphomepage-icon"></i> Haladó Csoport</span>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+  {{/if}}
+</script>
